@@ -21,3 +21,15 @@ FOR EACH ROW
 BEGIN
 INSERT INTO logsvehicles VALUES (null,NEW.id,'Updated',NOW());
 END//
+
+          Trriger 3
+
+DELIMITER//
+USE carrental//
+DROP TRIGGER IF EXISTS deleteVehicleStatus //
+CREATE TRIGGER deleteVehicleStatus
+BEFORE DELETE ON tblvehicles
+FOR EACH ROW
+BEGIN
+INSERT INTO logsvehicles VALUES (null,OLD.id,'DELETED',NOW());
+END//
