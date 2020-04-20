@@ -1,0 +1,23 @@
+          Trriger 1
+
+DELIMITER//
+USE carrental//
+DROP TRIGGER IF EXISTS insertVehicleStatus //
+CREATE TRIGGER insertVehicleStatus
+AFTER INSERT ON tblvehicles
+FOR EACH ROW
+BEGIN
+INSERT INTO logsvehicles VALUES (null,NEW.id,'Inserted',NOW());
+END//
+
+           Trriger 2
+
+DELIMITER//
+USE carrental//
+DROP TRIGGER IF EXISTS updateVehicleStatus //
+CREATE TRIGGER updateVehicleStatus
+AFTER UPDATE ON tblvehicles
+FOR EACH ROW
+BEGIN
+INSERT INTO logsvehicles VALUES (null,NEW.id,'Updated',NOW());
+END//

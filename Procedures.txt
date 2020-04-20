@@ -1,0 +1,87 @@
+1.Prima procedura
+DELIMITER//
+DROP PROCEDURE IF EXISTS insertVehicle//
+CREATE PROCEDURE insertVehicle(
+        IN pVehiclesTitle varchar(150),
+        IN pVehiclesBrand int(11),
+        IN pVehiclesOverview longtext,
+        IN pPricePerDay int(11),
+        IN pFuelType varchar(100),
+        IN pModelYear int(6),
+        IN pSeatingCapacity int(11),
+        IN pVImage1 varchar(150),
+        IN pVImage2 varchar(150),
+        IN pVImage3 varchar(150),
+        IN pVImage4 varchar(150),
+        IN pVImage5 varchar(150),
+        IN pAirConditioner int(11),
+        IN pPowerDoorLocks int(11),
+        IN pAntiLockBrakingSystem int(11),
+        IN pBrakeAssist  int(11),
+        IN pPowerSteering int(11),
+        IN pDriverAirbag  int(11),
+        IN pPassengerAirbag  int(11),
+        IN pPowerWindows  int(11),
+        IN pCDPlayer  int(11),
+        IN pCentralLocking int(11),
+        IN pCrashSensor  int(11),
+        IN pLeatherSeats  int(11)
+)
+BEGIN
+INSERT INTO tblvehicles(VehiclesTitle,VehiclesBrand,VehiclesOverview,PricePerDay,FuelType,ModelYear,SeatingCapacity,Vimage1,Vimage2,Vimage3,Vimage4,Vimage5,
+                        AirConditioner,PowerDoorLocks,AntiLockBrakingSystem,BrakeAssist,PowerSteering,DriverAirbag,PassengerAirbag,PowerWindows,CDPlayer,CentralLocking,
+                        CrashSensor,LeatherSeats)
+VALUES (pVehiclesTitle,pVehiclesBrand,pVehiclesOverview,pPricePerDay,pFuelType,pModelYear,pSeatingCapacity,pVImage1,pVImage2,pVImage3,pVImage4,pVImage5,pAirConditioner,pPowerDoorLocks,
+           pAntiLockBrakingSystem,pBrakeAssist,pPowerSteeringint,pDriverAirbag,pPassengerAirbag,pPowerWindows,pPowerWindows,pCDPlayer,pCentralLocking,pCrashSensor,pLeatherSeats);
+END//
+DELIMITER;  
+
+2.A doua procedura
+DELIMITER //
+DROP PROCEDURE IF EXISTS orderUsersByFullName()//
+CREATE PROCEDURE orderUsersByFullName()
+BEGIN 
+SELECT * FROM tblusers
+ORDER BY FullName ASC;
+END//
+DELIMITER;
+
+3.A tria procedura
+DELIMITER//
+DROP PROCEDURE IF EXISTS updateVehicle//
+CREATE PROCEDURE updateVehicle(
+        IN pid int(11),
+        IN pVehiclesTitle varchar(150),
+        IN pVehiclesBrand int(11),
+        IN pVehiclesOverview longtext,
+        IN pPricePerDay int(11),
+        IN pFuelType varchar(100),
+        IN pModelYear int(6),
+        IN pSeatingCapacity int(11),
+        IN pVImage1 varchar(150),
+        IN pVImage2 varchar(150),
+        IN pVImage3 varchar(150),
+        IN pVImage4 varchar(150),
+        IN pVImage5 varchar(150),
+        IN pAirConditioner int(11),
+        IN pPowerDoorLocks int(11),
+        IN pAntiLockBrakingSystem int(11),
+        IN pBrakeAssist  int(11),
+        IN pPowerSteering int(11),
+        IN pDriverAirbag  int(11),
+        IN pPassengerAirbag  int(11),
+        IN pPowerWindows  int(11),
+        IN pCDPlayer  int(11),
+        IN pCentralLocking int(11),
+        IN pCrashSensor  int(11),
+        IN pLeatherSeats  int(11)
+)
+BEGIN 
+UPDATE tblvehicles SET VehiclesTitle=pVehiclesTitle,VehiclesBrand=pVehiclesBrand,VehiclesOverview=pVehiclesOverview,PricePerDay=pPricePerDay,
+                       FuelType=pFuelType,ModelYear=pModelYear,SeatingCapacity=pSeatingCapacity, VImage1= pVImage1, VImage2= pVImage2, VImage3= pVImage3,
+                       VImage4= pVImage4, VImage5=pVImage5,AirConditioner=pAirConditioner,PowerDoorLocks=pPowerDoorLocks,AntiLockBrakingSystem=pAntiLockBrakingSystem,
+                       BrakeAssist=pBrakeAssist,PowerSteering=pPowerSteering,PowerWindows=pPowerWindows,CDPlayer=pCDPlayer,CentralLocking=pCentralLocking,
+                       CrashSensor=pCrashSensor,LeatherSeats=pLeatherSeats
+WHERE id=pid;
+END//
+DELIMITER;
