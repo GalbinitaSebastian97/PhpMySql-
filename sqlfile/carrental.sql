@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2020 at 11:46 AM
+-- Generation Time: Apr 20, 2020 at 08:38 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -26,13 +26,32 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`` PROCEDURE `getSubscribers` ()  SELECT id,SubscriberEmail FROM tblsubscribers$$
+CREATE DEFINER=`` PROCEDURE `getSubscriberss` (IN `strFullName` VARCHAR(30), IN `strEmailId` VARCHAR(30), IN `strPassword` VARCHAR(30), IN `strContactNo` INT)  BEGIN 
+INSERT INTO tblusers (FullName,EmailId,Password,ContactNo)
+VALUES (strFullName,strEmailId,strPassword,strContactNo);
+END$$
 
-CREATE DEFINER=`` PROCEDURE `getTblvehicles` ()  SELECT * FROM tblvehicles
-WHERE VehiclesTitle='BMW'OR VehiclesTitle='Audi'OR VehiclesTitle='Dacia'OR VehiclesTitle='Opel'OR VehiclesTitle='Carver'OR VehiclesTitle='Ford'OR VehiclesTitle='Ferrari'OR VehiclesTitle='Mini'OR VehiclesTitle='Land Rover'OR VehiclesTitle='Lotus'$$
+CREATE DEFINER=`` PROCEDURE `insertVehicle` (IN `pVehiclesTitle` VARCHAR(150), IN `pVehiclesBrand` INT(11), IN `pVehiclesOverview` LONGTEXT, IN `pPricePerDay` INT(11), IN `pFuelType` VARCHAR(100), IN `pModelYear` INT(6), IN `pSeatingCapacity` INT(11), IN `pVImage1` VARCHAR(150), IN `pVImage2` VARCHAR(150), IN `pVImage3` VARCHAR(150), IN `pVImage4` VARCHAR(150), IN `pVImage5` VARCHAR(150), IN `pAirConditioner` INT(11), IN `pPowerDoorLocks` INT(11), IN `pAntiLockBrakingSystem` INT(11), IN `pBrakeAssist` INT(11), IN `pPowerSteering` INT(11), IN `pDriverAirbag` INT(11), IN `pPassengerAirbag` INT(11), IN `pPowerWindows` INT(11), IN `pCDPlayer` INT(11), IN `pCentralLocking` INT(11), IN `pCrashSensor` INT(11), IN `pLeatherSeats` INT(11))  BEGIN
+INSERT INTO tblvehicles(VehiclesTitle,VehiclesBrand,VehiclesOverview,PricePerDay,FuelType,ModelYear,SeatingCapacity,Vimage1,Vimage2,Vimage3,Vimage4,Vimage5,
+                        AirConditioner,PowerDoorLocks,AntiLockBrakingSystem,BrakeAssist,PowerSteering,DriverAirbag,PassengerAirbag,PowerWindows,CDPlayer,CentralLocking,
+                        CrashSensor,LeatherSeats)
+VALUES (pVehiclesTitle,pVehiclesBrand,pVehiclesOverview,pPricePerDay,pFuelType,pModelYear,pSeatingCapacity,pVImage1,pVImage2,pVImage3,pVImage4,pVImage5,pAirConditioner,pPowerDoorLocks,
+           pAntiLockBrakingSystem,pBrakeAssist,pPowerSteering,pDriverAirbag,pPassengerAirbag,pPowerWindows,pCDPlayer,pCentralLocking,pCrashSensor,pLeatherSeats);
+END$$
 
-CREATE DEFINER=`` PROCEDURE `orderUsers` ()  SELECT * FROM tblusers
-ORDER BY FullName DESC$$
+CREATE DEFINER=`` PROCEDURE `orderUsersByFullName` ()  BEGIN 
+SELECT * FROM tblusers
+ORDER BY FullName ASC;
+END$$
+
+CREATE DEFINER=`` PROCEDURE `updateVehicle` (IN `pid` INT(11), IN `pVehiclesTitle` VARCHAR(150), IN `pVehiclesBrand` INT(11), IN `pVehiclesOverview` LONGTEXT, IN `pPricePerDay` INT(11), IN `pFuelType` VARCHAR(100), IN `pModelYear` INT(6), IN `pSeatingCapacity` INT(11), IN `pVImage1` VARCHAR(150), IN `pVImage2` VARCHAR(150), IN `pVImage3` VARCHAR(150), IN `pVImage4` VARCHAR(150), IN `pVImage5` VARCHAR(150), IN `pAirConditioner` INT(11), IN `pPowerDoorLocks` INT(11), IN `pAntiLockBrakingSystem` INT(11), IN `pBrakeAssist` INT(11), IN `pPowerSteering` INT(11), IN `pDriverAirbag` INT(11), IN `pPassengerAirbag` INT(11), IN `pPowerWindows` INT(11), IN `pCDPlayer` INT(11), IN `pCentralLocking` INT(11), IN `pCrashSensor` INT(11), IN `pLeatherSeats` INT(11))  BEGIN 
+UPDATE tblvehicles SET VehiclesTitle=pVehiclesTitle,VehiclesBrand=pVehiclesBrand,VehiclesOverview=pVehiclesOverview,PricePerDay=pPricePerDay,
+                       FuelType=pFuelType,ModelYear=pModelYear,SeatingCapacity=pSeatingCapacity, VImage1= pVImage1, VImage2= pVImage2, VImage3= pVImage3,
+                       VImage4= pVImage4, VImage5=pVImage5,AirConditioner=pAirConditioner,PowerDoorLocks=pPowerDoorLocks,AntiLockBrakingSystem=pAntiLockBrakingSystem,
+                       BrakeAssist=pBrakeAssist,PowerSteering=pPowerSteering,PowerWindows=pPowerWindows,CDPlayer=pCDPlayer,CentralLocking=pCentralLocking,
+                       CrashSensor=pCrashSensor,LeatherSeats=pLeatherSeats
+WHERE id=pid;
+END$$
 
 DELIMITER ;
 
@@ -97,7 +116,24 @@ CREATE TABLE `logsvehicles` (
 
 INSERT INTO `logsvehicles` (`id`, `vehicle_id`, `action`, `cdate`) VALUES
 (1, 13, 'Inserted', '2020-04-18 12:35:17'),
-(2, 4, 'Updated', '2020-04-18 12:42:44');
+(2, 4, 'Updated', '2020-04-18 12:42:44'),
+(3, 14, 'Inserted', '2020-04-20 16:08:43'),
+(4, 15, 'Inserted', '2020-04-20 16:09:48'),
+(5, 16, 'Inserted', '2020-04-20 16:11:42'),
+(6, 1, 'Updated', '2020-04-20 18:15:55'),
+(7, 1, 'Updated', '2020-04-20 18:16:16'),
+(8, 14, 'Updated', '2020-04-20 18:16:27'),
+(11, 1, 'Updated', '2020-04-20 18:25:15'),
+(12, 16, 'Updated', '2020-04-20 21:22:23'),
+(13, 16, 'Inserted', '2020-04-20 21:22:23'),
+(14, 16, 'Updated', '2020-04-20 21:24:01'),
+(15, 16, 'Inserted', '2020-04-20 21:24:01'),
+(16, 16, 'Inserted', '2020-04-20 21:25:43'),
+(17, 16, 'Inserted', '2020-04-20 21:26:05'),
+(18, 16, 'Updated', '2020-04-20 21:30:30'),
+(19, 17, 'Inserted', '2020-04-20 21:31:56'),
+(20, 18, 'Inserted', '2020-04-20 21:37:17'),
+(21, 18, 'Deleted', '2020-04-20 21:37:22');
 
 -- --------------------------------------------------------
 
@@ -294,7 +330,11 @@ CREATE TABLE `tblusers` (
 --
 
 INSERT INTO `tblusers` (`id`, `FullName`, `EmailId`, `Password`, `ContactNo`, `dob`, `Address`, `City`, `Country`, `RegDate`, `UpdationDate`) VALUES
-(5, 'Galbinita', 'lozag0@yahoo.com', '872329396a25d18a3d3a453133407006', '0131231', NULL, NULL, NULL, NULL, '2020-04-17 11:10:39', NULL);
+(5, 'Galbinita', 'lozag0@yahoo.com', '872329396a25d18a3d3a453133407006', '0131231', NULL, NULL, NULL, NULL, '2020-04-17 11:10:39', NULL),
+(14, 'asdsad', 'asdad', 'adasda', '100', NULL, NULL, NULL, NULL, '2020-04-20 11:53:42', NULL),
+(15, 'asdsad', 'asdad', 'adasda', '100', NULL, NULL, NULL, NULL, '2020-04-20 11:57:51', NULL),
+(16, 'asdsad', 'asdad', 'adasda', '100', NULL, NULL, NULL, NULL, '2020-04-20 11:58:32', NULL),
+(17, 'asdsad', 'asdad', 'adasda', '100', NULL, NULL, NULL, NULL, '2020-04-20 11:58:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -335,23 +375,33 @@ CREATE TABLE `tblvehicles` (
 --
 
 INSERT INTO `tblvehicles` (`id`, `VehiclesTitle`, `VehiclesBrand`, `VehiclesOverview`, `PricePerDay`, `FuelType`, `ModelYear`, `SeatingCapacity`, `Vimage1`, `Vimage2`, `Vimage3`, `Vimage4`, `Vimage5`, `AirConditioner`, `PowerDoorLocks`, `AntiLockBrakingSystem`, `BrakeAssist`, `PowerSteering`, `DriverAirbag`, `PassengerAirbag`, `PowerWindows`, `CDPlayer`, `CentralLocking`, `CrashSensor`, `LeatherSeats`) VALUES
-(1, 'Dacia', 2, 'vtretrvet', 345345, 'Petrol', 3453, 7, 'knowledge_base_bg.jpg', '20170523_145633.jpg', 'phpgurukul-1.png', 'social-icons.png', '', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(1, 'Daciaa', 2, 'ads', 111, '111', 1111, 2, 'adsada', 'adsasda', 'daadas', 'asdasda', 'asdasd', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 (2, 'Test Demoy', 2, 'My first car.', 859, 'CNG', 2015, 4, 'car_755x430.png', 'looking-used-car.png', 'banner-image.jpg', 'about_services_faq_bg.jpg', '', 1, 1, 1, 1, 1, 1, 1, NULL, 1, 1, NULL, NULL),
 (3, 'Something', 4, 'My second car', 563, 'CNG', 2012, 5, 'featured-img-3.jpg', 'dealer-logo.jpg', 'img_390x390.jpg', 'listing_img3.jpg', '', 1, 1, 1, 1, 1, 1, NULL, 1, 1, NULL, NULL, NULL),
 (4, 'BMW', 1, 'My third car.', 5636, 'CNG', 2012, 5, 'featured-img-3.jpg', 'featured-img-1.jpg', 'featured-img-1.jpg', 'featured-img-1.jpg', '', 1, 1, 1, 1, 1, 1, 1, 1, 1, NULL, NULL, NULL),
-(5, 'ytb rvtr', 5, 'vtretrvet', 345345, 'Petrol', 3453, 7, 'car_755x430.png', NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-(12, 'dasdaasdasdasd', 4, 'dasdasdasdasdasdasd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(13, 'asadddddddsadd', 10, 'dasdasaaa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(14, 'BMW', 1, 'ads', 111, '111', 1111, 2, 'adsada', 'adsasda', 'daadas', 'asdasda', 'asdasd', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(15, 'My firstProcedure', 4, 'My firstProcedure', 1312312, 'Petrol', 1997, 4, 'Screenshot (5).png', 'Screenshot (6).png', 'Screenshot (7).png', 'Screenshot (9).png', 'Screenshot (10).png', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(16, 'My secondProcedure', 1, 'asdada', 10000000, 'Petrol', 1997, 100, 'Screenshot (9).png', 'Screenshot (5).png', 'Screenshot (11).png', 'Screenshot (10).png', 'Screenshot (10).png', 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Triggers `tblvehicles`
 --
 DELIMITER $$
-CREATE TRIGGER `insertVehicle` AFTER INSERT ON `tblvehicles` FOR EACH ROW INSERT INTO logsvehicles VALUES(NULL,NEW.id,'Inserted',NOW())
+CREATE TRIGGER `deleteVehicleStatus` BEFORE DELETE ON `tblvehicles` FOR EACH ROW BEGIN
+INSERT INTO logsvehicles VALUES (null,OLD.id,'Deleted',NOW());
+END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `updateVehicle` BEFORE UPDATE ON `tblvehicles` FOR EACH ROW INSERT INTO logsvehicles VALUES(null,NEW.id,'Updated',NOW())
+CREATE TRIGGER `insertVehicleStatus` AFTER INSERT ON `tblvehicles` FOR EACH ROW BEGIN
+INSERT INTO logsvehicles VALUES (null,NEW.id,'Inserted',NOW());
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `updateVehicleStatus` AFTER UPDATE ON `tblvehicles` FOR EACH ROW BEGIN
+INSERT INTO logsvehicles VALUES (null,NEW.id,'Updated',NOW());
+END
 $$
 DELIMITER ;
 
@@ -451,7 +501,7 @@ ALTER TABLE `logsbrands`
 -- AUTO_INCREMENT for table `logsvehicles`
 --
 ALTER TABLE `logsvehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tblbooking`
@@ -499,13 +549,13 @@ ALTER TABLE `tbltestimonial`
 -- AUTO_INCREMENT for table `tblusers`
 --
 ALTER TABLE `tblusers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tblvehicles`
 --
 ALTER TABLE `tblvehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

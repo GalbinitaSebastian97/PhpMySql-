@@ -98,7 +98,7 @@ $msg="Page data updated  successfully";
 										</tr>
 									</tfoot>
 									<tbody>
-									<?php $sql = "CALL orderUsers";
+									<?php $sql = "CALL orderUsersByFullName";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
