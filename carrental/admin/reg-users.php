@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
+include('includes/Classes.php');
 if(strlen($_SESSION['alogin'])==0)
 	{
 header('location:index.php');
@@ -98,8 +99,18 @@ $msg="Page data updated  successfully";
 										</tr>
 									</tfoot>
 									<tbody>
-									<?php $sql = "CALL orderUsersByFullName";
-$query = $dbh -> prepare($sql);
+<?php $sql1= "DROP PROCEDURE IF EXISTS orderUsersByFullName";
+$sql2="CREATE PROCEDURE orderUsersByFullName()
+                BEGIN 
+                SELECT * FROM tblusers
+                ORDER BY FullName ASC;
+                END;";
+$query1= $dbh -> prepare($sql1);
+$query2= $dbh -> prepare($sql2);
+$query1->execute();
+$query2->execute();
+$sql="CALL orderUsersByFullName";
+$query=$dbh->prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;

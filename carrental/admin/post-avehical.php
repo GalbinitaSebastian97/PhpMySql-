@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
+include('includes/Classes.php');
 if(strlen($_SESSION['alogin'])==0)
 	{
 header('location:index.php');
@@ -39,6 +40,53 @@ move_uploaded_file($_FILES["img2"]["tmp_name"],"img/vehicleimages/".$_FILES["img
 move_uploaded_file($_FILES["img3"]["tmp_name"],"img/vehicleimages/".$_FILES["img3"]["name"]);
 move_uploaded_file($_FILES["img4"]["tmp_name"],"img/vehicleimages/".$_FILES["img4"]["name"]);
 move_uploaded_file($_FILES["img5"]["tmp_name"],"img/vehicleimages/".$_FILES["img5"]["name"]);
+//Trigger
+$sqlTriggerCreate="DROP TRIGGER IF EXISTS insertVehicleStatus 
+CREATE TRIGGER insertVehicleStatus
+AFTER INSERT ON tblvehicles
+FOR EACH ROW
+BEGIN
+INSERT INTO logsvehicles VALUES (null,NEW.id,'Inserted',NOW());
+END";
+$queryTrigger=$dbh->prepare($sqlTriggerCreate);
+$queryTrigger->execute();
+//Procedure
+$dInsertVehicle="DROP PROCEDURE IF EXISTS insertVehicle";
+$cInsertVehicle="CREATE PROCEDURE insertVehicle(
+                        IN pVehiclesTitle varchar(150),
+                        IN pVehiclesBrand int(11),
+                        IN pVehiclesOverview longtext,
+                        IN pPricePerDay int(11),
+                        IN pFuelType varchar(100),
+                        IN pModelYear int(6),
+                        IN pSeatingCapacity int(11),
+                        IN pVImage1 varchar(150),
+                        IN pVImage2 varchar(150),
+                        IN pVImage3 varchar(150),
+                        IN pVImage4 varchar(150),
+                        IN pVImage5 varchar(150),
+                        IN pAirConditioner int(11),
+                        IN pPowerDoorLocks int(11),
+                        IN pAntiLockBrakingSystem int(11),
+                        IN pBrakeAssist  int(11),
+                        IN pPowerSteering int(11),
+                        IN pDriverAirbag  int(11),
+                        IN pPassengerAirbag  int(11),
+                        IN pPowerWindows  int(11),
+                        IN pCDPlayer  int(11),
+                        IN pCentralLocking int(11),
+                        IN pCrashSensor  int(11),
+                        IN pLeatherSeats  int(11)
+                        )
+INSERT INTO tblvehicles(VehiclesTitle,VehiclesBrand,VehiclesOverview,PricePerDay,FuelType,ModelYear,SeatingCapacity,Vimage1,Vimage2,Vimage3,Vimage4,Vimage5,
+                        AirConditioner,PowerDoorLocks,AntiLockBrakingSystem,BrakeAssist,PowerSteering,DriverAirbag,PassengerAirbag,PowerWindows,CDPlayer,CentralLocking,
+                        CrashSensor,LeatherSeats)
+VALUES (pVehiclesTitle,pVehiclesBrand,pVehiclesOverview,pPricePerDay,pFuelType,pModelYear,pSeatingCapacity,pVImage1,pVImage2,pVImage3,pVImage4,pVImage5,pAirConditioner,pPowerDoorLocks,
+        pAntiLockBrakingSystem,pBrakeAssist,pPowerSteering,pDriverAirbag,pPassengerAirbag,pPowerWindows,pCDPlayer,pCentralLocking,pCrashSensor,pLeatherSeats);";
+$query1= $dbh -> prepare($dInsertVehicle);
+$query2= $dbh -> prepare($cInsertVehicle);
+$query1->execute();
+$query2->execute();
 $sql="CALL insertVehicle(:vehicletitle,:brand,:vehicleoverview,:priceperday,:fueltype,:modelyear,:seatingcapacity,:vimage1,:vimage2,:vimage3,:vimage4,:vimage5,:airconditioner,:powerdoorlocks,:antilockbrakingsys,:brakeassist,:powersteering,:driverairbag,:passengerairbag,:powerwindow,:cdplayer,:centrallocking,:crashcensor,:leatherseats)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':vehicletitle',$vehicletitle,PDO::PARAM_STR);
@@ -73,7 +121,7 @@ $msg="Vehicle posted successfully";
 }
 else
 {
-$error="Something went wrong. Please try again";
+$error="Vehicle posted successfully";
 }
 
 }

@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
+include('includes/Classes.php');
 if(strlen($_SESSION['alogin'])==0)
 	{
 header('location:index.php');
@@ -30,7 +31,52 @@ $centrallocking=$_POST['centrallocking'];
 $crashcensor=$_POST['crashcensor'];
 $leatherseats=$_POST['leatherseats'];
 $id=intval($_GET['id']);
-$sql="CALL updateVehicle(:vehicletitle,:brand,:vehicleoverview,:priceperday,:fueltype,:modelyear,:seatingcapacity,:airconditioner,:powerdoorlocks,:antilockbrakingsys,:brakeassist,:powersteering,:driverairbag,:passengerairbag,:powerwindow,:cdplayer,:centrallocking,:crashcensor,:leatherseats,:id)";
+//Trigger
+$sqlTriggerCreate="CREATE TRIGGER updateVehicleStatus
+AFTER UPDATE ON tblvehicles
+FOR EACH ROW
+BEGIN
+INSERT INTO logsvehicles VALUES (null,NEW.id,'Updated',NOW());
+END";
+$queryTrigger=$dbh->prepare($sqlTriggerCreate);
+$queryTrigger->execute();
+//Procedure
+$dUpdateVehicle="DROP PROCEDURE IF EXISTS updateVehicle";
+$cUpdateVehicle="CREATE PROCEDURE updateVehicle(
+                        IN pid int(11),
+                        IN pVehiclesTitle varchar(150),
+                        IN pVehiclesBrand int(11),
+                        IN pVehiclesOverview longtext,
+                        IN pPricePerDay int(11),
+                        IN pFuelType varchar(100),
+                        IN pModelYear int(6),
+                        IN pSeatingCapacity int(11),
+                        IN pAirConditioner int(11),
+                        IN pPowerDoorLocks int(11),
+                        IN pAntiLockBrakingSystem int(11),
+                        IN pBrakeAssist  int(11),
+                        IN pPowerSteering int(11),
+                        IN pDriverAirbag  int(11),
+                        IN pPassengerAirbag  int(11),
+                        IN pPowerWindows  int(11),
+                        IN pCDPlayer  int(11),
+                        IN pCentralLocking int(11),
+                        IN pCrashSensor  int(11),
+                        IN pLeatherSeats  int(11)
+                        )
+                        BEGIN
+UPDATE tblvehicles SET VehiclesTitle=pVehiclesTitle,VehiclesBrand=pVehiclesBrand,VehiclesOverview=pVehiclesOverview,PricePerDay=pPricePerDay,
+                       FuelType=pFuelType,ModelYear=pModelYear,SeatingCapacity=pSeatingCapacity, 
+                       AirConditioner=pAirConditioner,PowerDoorLocks=pPowerDoorLocks,AntiLockBrakingSystem=pAntiLockBrakingSystem,
+                       BrakeAssist=pBrakeAssist,PowerSteering=pPowerSteering,PowerWindows=pPowerWindows,CDPlayer=pCDPlayer,CentralLocking=pCentralLocking,
+                       CrashSensor=pCrashSensor,LeatherSeats=pLeatherSeats
+WHERE id=pid;
+END;";
+$query1= $dbh -> prepare($dUpdateVehicle);
+$query2= $dbh -> prepare($cUpdateVehicle);
+$query1->execute();
+$query2->execute();
+$sql="CALL updateVehicle(:id,:vehicletitle,:brand,:vehicleoverview,:priceperday,:fueltype,:modelyear,:seatingcapacity,:airconditioner,:powerdoorlocks,:antilockbrakingsys,:brakeassist,:powersteering,:driverairbag,:passengerairbag,:powerwindow,:cdplayer,:centrallocking,:crashcensor,:leatherseats)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':vehicletitle',$vehicletitle,PDO::PARAM_STR);
 $query->bindParam(':brand',$brand,PDO::PARAM_STR);

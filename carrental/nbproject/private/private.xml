@@ -2,6 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/xampp/htdocs/carrental/includes/Classes.php</file>
+            <file>file:/C:/xampp/htdocs/carrental/admin/edit-vehicle.php</file>
+            <file>file:/C:/xampp/htdocs/carrental/admin/post-avehical.php</file>
+            <file>file:/C:/xampp/htdocs/carrental/admin/manage-vehicles.php</file>
+        </group>
     </open-files>
 </project-private>
